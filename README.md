@@ -20,15 +20,15 @@ Este proyecto implementa un codificador/decodificador de mensajes utilizando el 
 
 1. **Clonar el Repositorio**:
     ```sh
-    git clone https://github.com/tu-usuario/codificador-decodificador.git
-    cd codificador-decodificador
+    git clone git clone https://github.com/tu-usuario/codificador-decodificador.git
+    cd src
     ```
 
 2. **Compilar el Código**:
     - Asegúrate de tener `gcc` y un ensamblador compatible (como `nasm`) instalados.
     - Compila el código C y ensamblador:
       ```sh
-      gcc -o codificador main.c codificar_decodificar.asm
+      make release
       ```
 
 3. **Ejecutar el Programa**:
