@@ -53,4 +53,4 @@ Este proyecto implementa un codificador/decodificador de mensajes utilizando el 
 Ingrese el mensaje: Hola Mundo
 Ingrese la cantidad de posiciones: 3
 Ingrese 0 para codificar o 1 para decodificar: 0
-Resultado: Krñd Pxqgr
+Resultado: Krod Pxqgr
