@@ -1,5 +1,3 @@
-; Código en ASM
-
 section .text
 global codificar_decodificar
 
