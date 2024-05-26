@@ -2,10 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-// Prototipo de la función externa
 extern void codificar_decodificar(char *mensaje, int posiciones, int operacion);
 
-// Secuencias de escape ANSI para colores
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
 #define RED "\033[31m"
