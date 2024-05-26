@@ -1,79 +1,68 @@
 ; Código en ASM
 
-section .data
-    mensaje db 'ingresa tu mensaje: ', 0
-    mensaje_desplazamiento db 'ingresa la cantidad de desplazamiento: ', 0
-    mensaje_salida db 'mensaje cifrado: ', 0
-    mensaje_error db 'opcion invalida. saliendo.', 0
-    nueva_linea db 10, 0
-
-section .bss
-    entrada resb 256 ; reservar espacio para el mensaje de entrada
-    salida resb 256 ; reservar espacio para el mensaje de salida
-    desplazamiento resb 4 ; reservar espacio para el valor de desplazamiento
-
 section .text
-    global _start
+global codificar_decodificar
 
-_start:
-    ; leer el mensaje del usuario
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, mensaje
-    mov rdx, 20
-    syscall
+; Función codificar_decodificar
+; Argumentos:
+;   rdi: puntero al mensaje
+;   rsi: cantidad de posiciones
+;   rdx: 0 para codificar, 1 para decodificar
+codificar_decodificar:
+    xor rcx, rcx        ; Inicializar contador
 
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, entrada
-    mov rdx, 256
-    syscall
-
-    ; leer el valor de desplazamiento
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, mensaje_desplazamiento
-    mov rdx, 30
-    syscall
-
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, desplazamiento
-    mov rdx, 4
-    syscall
-
-    ; convertir el valor de desplazamiento de ascii a numero
-    sub byte [desplazamiento], '0'
-
-    ; cifrar el mensaje
-    mov rsi, entrada ; apunta al inicio del mensaje de entrada
-    mov rdi, salida ; apunta al inicio del mensaje de salida
-    mov cl, byte [desplazamiento] ; cargar el valor del desplazamiento
-
-cifrado_bucle:
-    lodsb ; cargar el siguiente byte de entrada en al
-    test al, al ; comprobar si hemos llegado al final del string (byte nulo)
-    jz hecho ; si es el final, saltar a hecho
-
-    add al, cl ; desplazar el caracter
-    stosb ; almacenar el caracter cifrado en salida
-    jmp cifrado_bucle ; repetir para el siguiente caracter
-
-hecho:
-    ; imprimir el mensaje cifrado
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, mensaje_salida
-    mov rdx, 16
-    syscall
-
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, salida
-    mov rdx, 256
-    syscall
-
-    ; salir del programa
-    mov rax, 60
-    xor rdi, rdi
-    syscall
+loop:
+    mov al, byte [rdi + rcx]   ; Cargar byte del mensaje
+    cmp al, 0                  ; ¿Fin de cadena?
+    je fin                     ; Si, terminar
+    cmp al, 'A'                ; ¿Letra mayúscula?
+    jl minuscula               ; No, comprobar minúscula
+    cmp al, 'Z'
+    jg minuscula               ; No, comprobar minúscula
+    ; Letra mayúscula
+    sub al, 'A'                ; Normalizar a 0
+    cmp rdx, 0                 ; ¿Codificar?
+    je codificar_mayuscula     ; Si, codificar
+    ; Decodificar mayúscula
+    mov r8, rsi                ; Copiar posiciones en r8
+    neg r8                     ; r8 = -posiciones
+    add al, r8b                ; Sumar -posiciones
+    and eax, 0x0000001F        ; Aplicar módulo 26
+    add al, 'A'                ; Restaurar mayúscula
+    jmp guardar
+codificar_mayuscula:
+    add al, sil                ; Sumar posiciones
+    and eax, 0x0000001F        ; Aplicar módulo 26
+    add al, 'A'                ; Restaurar mayúscula
+    jmp guardar
+minuscula:
+    cmp al, 'a'                ; ¿Letra minúscula?
+    jl no_letra                ; No, pasar al siguiente byte
+    cmp al, 'z'
+    jg no_letra                ; No, pasar al siguiente byte
+    ; Letra minúscula
+    sub al, 'a'                ; Normalizar a 0
+    cmp rdx, 0                 ; ¿Codificar?
+    je codificar_minuscula     ; Si, codificar
+    ; Decodificar minúscula
+    mov r8, rsi                ; Copiar posiciones en r8
+    neg r8                     ; r8 = -posiciones
+    add al, r8b                ; Sumar -posiciones
+    and eax, 0x0000001F        ; Aplicar módulo 26
+    add al, 'a'                ; Restaurar minúscula
+    jmp guardar
+codificar_minuscula:
+    add al, sil                ; Sumar posiciones
+    and eax, 0x0000001F        ; Aplicar módulo 26
+    add al, 'a'                ; Restaurar minúscula
+    jmp guardar
+no_letra:
+    mov byte [rdi + rcx], al   ; Guardar byte sin modificar
+    inc rcx                    ; Siguiente byte
+    jmp loop
+guardar:
+    mov byte [rdi + rcx], al   ; Guardar byte modificado
+    inc rcx                    ; Siguiente byte
+    jmp loop
+fin:
+    ret

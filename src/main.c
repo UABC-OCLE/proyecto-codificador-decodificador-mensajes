@@ -1,33 +1,27 @@
 // Código en C
 
 #include <stdio.h>
-#include "funciones.h"
 #include <string.h>
 
+extern void codificar_decodificar(char *mensaje, int posiciones, int operacion);
+
 int main() {
-    char entrada[256];
-    char salida[256];
-    int desplazamiento;
-    int modo;
+    char mensaje[100];
+    int posiciones, operacion;
 
-    // leer el mensaje del usuario
-    printf("Ingresa el mensaje: ");
-    fgets(entrada, sizeof(entrada), stdin);
-    entrada[strcspn(entrada, "\n")] = 0; // eliminar el salto de linea
+    printf("Ingrese el mensaje: ");
+    fgets(mensaje, sizeof(mensaje), stdin);
+    mensaje[strcspn(mensaje, "\n")] = '\0'; // Eliminar el salto de línea
 
-    // leer el valor del desplazamiento
-    printf("Ingresa el numero de posiciones para el cifrado cesar: ");
-    scanf("%d", &desplazamiento);
+    printf("Ingrese la cantidad de posiciones: ");
+    scanf("%d", &posiciones);
 
-    // leer la opcion de cifrar o descifrar
-    printf("Ingresa 1 para cifrar o 2 para descifrar: ");
-    scanf("%d", &modo);
+    printf("Ingrese 0 para codificar o 1 para decodificar: ");
+    scanf("%d", &operacion);
 
-    // llamar a la funcion de cifrado/descifrado
-    cifradoCesar(entrada, salida, desplazamiento, modo);
+    codificar_decodificar(mensaje, posiciones, operacion);
 
-    // imprimir el mensaje resultante
-    printf("Mensaje resultante: %s\n", salida);
+    printf("Resultado: %s\n", mensaje);
 
     return 0;
 }
