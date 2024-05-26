@@ -2,7 +2,7 @@
 ASM_SOURCE=code.asm
 C_SOURCES=main.c 
 OBJ_FILES=main.o code.o
-EXEC_RELEASE=program_release.bin
+EXEC_RELEASE=cifrador.bin
 
 release: $(OBJ_FILES)
 	gcc -no-pie -o $(EXEC_RELEASE) $(OBJ_FILES)
