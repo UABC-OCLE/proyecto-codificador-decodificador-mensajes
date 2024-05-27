@@ -7,7 +7,7 @@ global codificar_decodificar
 ;   rsi: cantidad de posiciones
 ;   rdx: 0 para codificar, 1 para decodificar
 codificar_decodificar:
-    xor rcx, rcx        ; Inicializar contador
+    xor rcx, rcx        ; Iniciar contador
 
 loop:
     mov al, byte [rdi + rcx]   ; Cargar byte del mensaje
