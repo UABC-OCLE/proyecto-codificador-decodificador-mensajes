@@ -1,18 +1,25 @@
-# Regla principal para compilar el programa
-release: examen.bin
+ASM_SOURCE = coder.asm
+C_SOURCE = main.c
+OBJ_FILES = main.o coder.o
+EXEC_RELEASE = proyecto_release.bin
+EXEC_DEBUG = proyecto_debug.bin
 
-# Compila el programa final enlazando los archivos objeto de C y ASM
-examen.bin: main.o code.o
-	gcc -o examen.bin main.o code.o -no-pie
+# Regla para la version de lanzamiento
+release: $(OBJ_FILES)
+		gcc -o $(EXEC_RELEASE) $(OBJ_FILES)
 
-# Compila el archivo fuente de C en un archivo objeto
-main.o: main.c
-	gcc -Wall -c main.c -o main.o
+# Regla para la version de depuracion
+debug: $(OBJ_FILES)
+		gcc -g -o $(EXEC_DEBUG) $(OBJ_FILES)
 
-# Compila el archivo fuente de ASM en un archivo objeto
-code.o: coder.asm
-	nasm -f elf64 coder.asm -o code.o
+# Regla para compilar el codigo fuente de C a objeto
+main.o: $(C_SOURCE)
+		gcc -c $(C_SOURCE)
 
-# Limpiar los archivos compilados y el ejecutable
+# Regla para compilar el codigo fuente ASM a objeto
+coder.o: $(ASM_SOURCE)
+		nasm -f elf64 -o coder.o $(ASM_SOURCE)
+
+# Limpieza de archivos generados
 clean:
-	rm -f *.o *.bin
+		rm -f $(OBJ_FILES) $(EXEC_RELEASE) $(EXEC_DEBUG)

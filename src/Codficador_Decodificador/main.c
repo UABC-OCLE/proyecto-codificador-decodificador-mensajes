@@ -15,8 +15,7 @@ void reSize(char ***ptr_Cadenas, int iCadenas); /* Aumenta en 1 el espacio del d
 void freeMemory(char **ptr_Cadenas, int iCadenas); /* Libera la memoria del doble apuntador */
 void waitForUser(); /* Esperar que el usuario dese continuar */
 
-int main(void)
-{
+int main(void){
     // Declaracion de variables
     int opcion = 0;
     int iCadenas = 0;
@@ -133,7 +132,7 @@ void decodificarMensajes(char **ptr_Cadenas, int iCadenas){
         printf("\nIngresa la cadena a decodificar: ");
         scanf("%d",&opcion);
         //
-        if(opcion < 0 || opcion > iCadenas){
+        if(opcion == 0 || opcion > iCadenas){
             printf("Error, rango inexistente.\n\n");
         }
         else{
