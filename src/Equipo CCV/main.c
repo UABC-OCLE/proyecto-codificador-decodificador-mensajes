@@ -1,4 +1,3 @@
-// Código en C
 #include <stdio.h>
 #include <string.h>
 
