@@ -21,6 +21,7 @@ Este proyecto implementa un codificador/decodificador de mensajes utilizando el 
 1. **Clonar el Repositorio**:
     ```sh
     git clone https://github.com/UABC-OCLE/proyecto-codificador-decodificador-mensajes.git
+    cd proyecto-codificador-decodificador-mensajes
     cd src
     cd Equipo CCV
     ```
